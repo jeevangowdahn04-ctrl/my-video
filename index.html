@@ -1,42 +1,597 @@
 <!DOCTYPE html>
-<html lang="kn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ನನ್ನ ಸ್ವಂತ ವೆಬ್‌ಸೈಟ್</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7fafc;
-            color: #2d3748;
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-        }
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 500px;
-            text-align: center;
-        }
-        h1 {
-            color: #2b6cb0;
-        }
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- TODO: ನಿಮ್ಮ ಬ್ಯುಸಿನೆಸ್ ಹೆಸರು ಮತ್ತು ವಿವರಣೆ ಹಾಕಿ -->
+  <title>[YOUR BUSINESS NAME] | [Your Tagline]</title>
+  <meta name="description" content="[Short description of your business – what you sell and where you deliver]">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ========== COLOR THEME (change here to re-theme the whole site) ========== */
+    :root {
+      --green: #006b3c;
+      --green-dark: #064e3b;
+      --green-soft: #e7f4ec;
+      --orange: #ff6500;
+      --orange-dark: #e55a00;
+      --orange-soft: #fff1e6;
+      --cream: #fff8ef;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --bg-alt: #f9fafb;
+      --radius: 12px;
+      --shadow: 0 4px 18px rgba(0, 0, 0, .06);
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+
+    /* ========== TOP BAR ========== */
+    .topbar {
+      background: var(--cream);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .topbar .container {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 6px; padding-bottom: 6px; gap: 12px;
+    }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-links a:hover { color: var(--orange); }
+
+    /* ========== HEADER ========== */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,.03);
+    }
+    .header-main {
+      display: flex; align-items: center; gap: 24px;
+      padding-top: 12px; padding-bottom: 12px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 24px; font-weight: 800; color: var(--green);
+      white-space: nowrap;
+    }
+    .logo-mark {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff; display: grid; place-items: center; font-size: 20px;
+    }
+    .logo span.accent { color: var(--orange); }
+
+    .search {
+      flex: 1; display: flex; align-items: center; gap: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 14px;
+    }
+    .search input {
+      border: 0; background: transparent; outline: none;
+      font: inherit; font-size: 15px; width: 100%; color: var(--text);
+    }
+    .search svg { flex-shrink: 0; color: var(--orange); }
+
+    .header-actions { display: flex; align-items: center; gap: 20px; }
+    .icon-btn {
+      display: flex; flex-direction: column; align-items: center;
+      font-size: 12px; font-weight: 600; gap: 2px;
+      background: none; border: 0; cursor: pointer; color: var(--text);
+    }
+    .icon-btn:hover { color: var(--orange); }
+    .menu-toggle { display: none; }
+
+    .header-nav { border-top: 1px solid var(--border); }
+    .header-nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 8px; padding-bottom: 8px; gap: 16px;
+    }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-links a {
+      font-size: 14px; font-weight: 600; color: var(--green);
+      padding: 6px 12px; border-radius: 8px;
+    }
+    .nav-links a:hover { background: var(--green-soft); }
+    .nav-links a.highlight { background: var(--orange-soft); color: var(--orange-dark); }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--orange); color: #fff;
+      font-weight: 700; font-size: 15px;
+      padding: 12px 20px; border-radius: var(--radius); border: 0; cursor: pointer;
+      box-shadow: 0 6px 16px rgba(255, 101, 0, .3);
+      transition: transform .15s, background .15s;
+    }
+    .btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
+    .btn-sm { padding: 9px 16px; font-size: 14px; box-shadow: none; }
+    .btn-outline {
+      background: transparent; color: var(--green);
+      border: 1.5px solid var(--green); box-shadow: none;
+    }
+    .btn-outline:hover { background: var(--green); color: #fff; }
+
+    /* ========== HERO ========== */
+    .hero { padding: 16px 0 0; }
+    .hero-box {
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff; border-radius: 16px;
+      padding: 56px 40px; position: relative; overflow: hidden;
+    }
+    .hero-box::after {
+      content: ""; position: absolute; right: -80px; top: -80px;
+      width: 320px; height: 320px; border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    .badge {
+      display: inline-block; background: var(--orange); color: #fff;
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 999px; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 46px); font-weight: 800; line-height: 1.15;
+      margin: 14px 0 12px; max-width: 640px; letter-spacing: -.5px;
+    }
+    .hero p { font-size: 16px; opacity: .9; max-width: 520px; margin-bottom: 24px; }
+
+    /* ========== TRUST STRIP ========== */
+    .trust .container {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; padding-top: 28px; padding-bottom: 28px;
+    }
+    .trust h4 { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+    .trust ul { list-style: none; display: flex; flex-wrap: wrap; gap: 20px; }
+    .trust li { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .trust li::before { content: "✓ "; color: var(--green); font-weight: 800; }
+
+    /* ========== SECTIONS ========== */
+    section.block { padding: 48px 0; }
+    section.alt { background: var(--bg-alt); }
+    .section-head {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 24px; gap: 12px;
+    }
+    .section-head h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 800; letter-spacing: -.3px; }
+    .section-head p { color: var(--muted); font-size: 14px; }
+    .view-all { font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .view-all:hover { color: var(--orange); }
+
+    /* ========== CATEGORY CARDS ========== */
+    .cat-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px;
+    }
+    .cat-card {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 12px; text-align: center; background: var(--bg);
+      transition: box-shadow .2s, transform .2s, border-color .2s;
+    }
+    .cat-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); border-color: var(--green); }
+    .cat-icon {
+      width: 56px; height: 56px; margin: 0 auto 12px;
+      border: 1px solid var(--border); border-radius: 12px;
+      display: grid; place-items: center; font-size: 26px; background: var(--cream);
+    }
+    .cat-card h3 { font-size: 15px; font-weight: 700; }
+
+    /* ========== PRODUCT CARDS ========== */
+    .product-row {
+      display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr);
+      gap: 16px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory;
+    }
+    .product-row::-webkit-scrollbar { height: 8px; }
+    .product-row::-webkit-scrollbar-track { background: var(--border); border-radius: 8px; }
+    .product-row::-webkit-scrollbar-thumb { background: #b7dcc4; border-radius: 8px; }
+    .product {
+      scroll-snap-align: start;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg); overflow: hidden; display: flex; flex-direction: column;
+      transition: box-shadow .2s;
+    }
+    .product:hover { box-shadow: var(--shadow); }
+    .product-img {
+      position: relative; aspect-ratio: 1 / 1; background: #f5f1e8;
+      display: grid; place-items: center; font-size: 64px;
+    }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .discount {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--orange); color: #fff; font-size: 11px; font-weight: 800;
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .wish {
+      position: absolute; top: 8px; right: 8px; width: 32px; height: 32px;
+      border-radius: 50%; background: #fff; border: 1px solid var(--border);
+      display: grid; place-items: center; cursor: pointer; font-size: 15px;
+    }
+    .product-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .tag {
+      align-self: flex-start; background: var(--orange); color: #fff;
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .product h3 { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rating { font-size: 13px; color: var(--muted); }
+    .price { font-size: 18px; font-weight: 800; }
+    .price del { font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 6px; }
+    .product .btn { justify-content: center; margin-top: auto; }
+
+    /* ========== ABOUT ========== */
+    .about { text-align: center; }
+    .about h2 { font-size: clamp(24px, 3.5vw, 32px); font-weight: 800; margin-bottom: 8px; }
+    .about > .container > p { color: var(--muted); max-width: 640px; margin: 0 auto 32px; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; text-align: left; }
+    .feature {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px;
+    }
+    .feature .f-icon {
+      width: 44px; height: 44px; border-radius: 10px; background: var(--green-soft);
+      display: grid; place-items: center; font-size: 22px; margin-bottom: 12px;
+    }
+    .feature h3 { font-size: 16px; margin-bottom: 6px; }
+    .feature p { font-size: 14px; color: var(--muted); }
+
+    /* ========== CONTACT ========== */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .contact-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px;
+    }
+    .contact-card h3 { margin-bottom: 14px; }
+    .contact-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 15px; }
+    .contact-item b { display: block; font-size: 13px; color: var(--muted); font-weight: 600; }
+    form .field { margin-bottom: 12px; }
+    form input, form textarea {
+      width: 100%; font: inherit; font-size: 15px;
+      border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; background: var(--bg-alt);
+    }
+    form input:focus, form textarea:focus { outline: 2px solid var(--green); border-color: transparent; }
+
+    /* ========== FOOTER ========== */
+    footer { background: var(--green-dark); color: #d1e7dc; padding: 48px 0 20px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 28px; }
+    footer h4 { color: #fff; margin-bottom: 12px; font-size: 15px; }
+    footer ul { list-style: none; }
+    footer li { margin-bottom: 8px; font-size: 14px; }
+    footer a:hover { color: var(--orange); }
+    footer .logo { color: #fff; margin-bottom: 10px; }
+    footer .logo-mark { background: var(--orange); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.15); margin-top: 32px; padding-top: 16px;
+      font-size: 13px; text-align: center;
+    }
+
+    /* ========== WHATSAPP FLOAT ========== */
+    .whatsapp {
+      position: fixed; right: 16px; bottom: 16px; z-index: 60;
+      width: 54px; height: 54px; border-radius: 50%; background: #25d366; color: #fff;
+      display: grid; place-items: center; font-size: 26px; box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    }
+
+    /* ========== MOBILE MENU (drawer) ========== */
+    .drawer {
+      position: fixed; inset: 0 30% 0 0; max-width: 320px; background: #fff; z-index: 100;
+      transform: translateX(-100%); transition: transform .25s; padding: 20px; overflow-y: auto;
+      box-shadow: 4px 0 24px rgba(0,0,0,.15);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer a { display: block; padding: 12px 4px; border-bottom: 1px solid var(--border); font-weight: 600; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 90; display: none; }
+    .overlay.open { display: block; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .topbar-links { display: none; }
+      .topbar .container { justify-content: center; }
+      .menu-toggle { display: flex; }
+      .header-main { flex-wrap: wrap; gap: 12px; }
+      .logo { flex: 1; justify-content: center; font-size: 20px; }
+      .search { order: 3; flex-basis: 100%; }
+      .icon-btn .label { display: none; }
+      .header-nav { display: none; }
+      .hero-box { padding: 36px 22px; border-radius: 14px; }
+      .trust .container { flex-direction: column; align-items: flex-start; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .cat-card { padding: 16px 8px; }
+      .cat-card h3 { font-size: 13px; }
+      .product-row { grid-auto-columns: 70%; }
+      section.block { padding: 36px 0; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
-    <div class="card">
-        <h1>ಸ್ವಾಗತ!</h1>
-        <p>ನನ್ನ ಸ್ವಂತ ವೆಬ್‌ಸೈಟ್ GitHub ಮೂಲಕ ಯಶಸ್ವಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿದೆ.</p>
+
+  <!-- ===== TOP BAR ===== -->
+  <div class="topbar">
+    <div class="container">
+      <span>🚚 [Your top-bar message, e.g. Free delivery above ₹999]</span>
+      <div class="topbar-links">
+        <a href="#offers">Today's offers</a>
+        <a href="#contact">🎧 Support</a>
+      </div>
     </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="container header-main">
+      <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+
+      <a href="#" class="logo">
+        <!-- TODO: ಲೋಗೋ ಚಿತ್ರ ಇದ್ದರೆ ಇದನ್ನು <img src="logo.png" alt="..." height="40"> ಆಗಿ ಬದಲಿಸಿ -->
+        <span class="logo-mark">🌱</span>
+        <span>[Your<span class="accent">Brand</span>]</span>
+      </a>
+
+      <label class="search">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search [seeds, fertilizers, tools]...">
+      </label>
+
+      <div class="header-actions">
+        <a href="#contact" class="icon-btn" aria-label="Account">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          <span class="label">Account</span>
+        </a>
+        <a href="#products" class="icon-btn" aria-label="Cart">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.5 12h11L21 7H6"/></svg>
+          <span class="label">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="header-nav">
+      <div class="container">
+        <a href="#categories" class="btn btn-sm">☰ All categories</a>
+        <div class="nav-links">
+          <a href="#">Home</a>
+          <a href="#products">Products</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="#offers" class="highlight">Offers</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="Mobile menu">
+    <div class="drawer-head">
+      <strong>[Your Brand]</strong>
+      <button class="icon-btn" id="closeBtn" aria-label="Close menu" style="font-size:22px">✕</button>
+    </div>
+    <a href="#">Home</a>
+    <a href="#categories">Categories</a>
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#offers" style="color:var(--orange)">Offers</a>
+  </aside>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="offers">
+    <div class="container">
+      <div class="hero-box">
+        <span class="badge">[Trending]</span>
+        <h1>[Your Main Headline – e.g. Quality Farm Products for Better Harvests]</h1>
+        <p>[One-line description of what you offer and who it is for.]</p>
+        <a href="#products" class="btn">[Shop now] →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST STRIP ===== -->
+  <div class="trust">
+    <div class="container">
+      <h4>Why customers choose us</h4>
+      <ul>
+        <li>[Wide Range of Products]</li>
+        <li>[Quality Assured]</li>
+        <li>[Fast Delivery]</li>
+        <li>[Trusted by Farmers]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== CATEGORIES ===== -->
+  <section class="block" id="categories">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Shop by Category</h2>
+          <p>[Short subtitle for categories]</p>
+        </div>
+        <a href="#" class="view-all">View all →</a>
+      </div>
+      <!-- TODO: ಬೇಕಾದಷ್ಟು ಕಾರ್ಡ್‌ಗಳನ್ನು ಕಾಪಿ ಮಾಡಿ ಸೇರಿಸಿ -->
+      <div class="cat-grid">
+        <a href="#" class="cat-card"><div class="cat-icon">🌾</div><h3>[Category 1]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">🧪</div><h3>[Category 2]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">🛠️</div><h3>[Category 3]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">💧</div><h3>[Category 4]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">🌱</div><h3>[Category 5]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">🚜</div><h3>[Category 6]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">🐛</div><h3>[Category 7]</h3></a>
+        <a href="#" class="cat-card"><div class="cat-icon">⛺</div><h3>[Category 8]</h3></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCTS ===== -->
+  <section class="block alt" id="products">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Popular Products</h2>
+          <p>[Short subtitle for products]</p>
+        </div>
+        <a href="#" class="view-all">View all →</a>
+      </div>
+      <!-- TODO: ಎಮೋಜಿ ಬದಲು <img src="product1.jpg" alt="..."> ಹಾಕಿ -->
+      <div class="product-row">
+        <article class="product">
+          <div class="product-img"><span class="discount">[30% off]</span><button class="wish" aria-label="Wishlist">♡</button>🌽</div>
+          <div class="product-body">
+            <span class="tag">[Category]</span>
+            <h3>[Product Name 1]</h3>
+            <div class="rating">★ [4.5]</div>
+            <div class="price">₹[499]<del>₹[699]</del></div>
+            <a href="#contact" class="btn btn-sm">Enquire / Buy</a>
+          </div>
+        </article>
+        <article class="product">
+          <div class="product-img"><span class="discount">[25% off]</span><button class="wish" aria-label="Wishlist">♡</button>🧰</div>
+          <div class="product-body">
+            <span class="tag">[Category]</span>
+            <h3>[Product Name 2]</h3>
+            <div class="rating">★ [4.6]</div>
+            <div class="price">₹[349]<del>₹[465]</del></div>
+            <a href="#contact" class="btn btn-sm">Enquire / Buy</a>
+          </div>
+        </article>
+        <article class="product">
+          <div class="product-img"><span class="discount">[40% off]</span><button class="wish" aria-label="Wishlist">♡</button>🌿</div>
+          <div class="product-body">
+            <span class="tag">[Category]</span>
+            <h3>[Product Name 3]</h3>
+            <div class="rating">★ [4.4]</div>
+            <div class="price">₹[299]<del>₹[499]</del></div>
+            <a href="#contact" class="btn btn-sm">Enquire / Buy</a>
+          </div>
+        </article>
+        <article class="product">
+          <div class="product-img"><span class="discount">[20% off]</span><button class="wish" aria-label="Wishlist">♡</button>💦</div>
+          <div class="product-body">
+            <span class="tag">[Category]</span>
+            <h3>[Product Name 4]</h3>
+            <div class="rating">★ [4.7]</div>
+            <div class="price">₹[799]<del>₹[999]</del></div>
+            <a href="#contact" class="btn btn-sm">Enquire / Buy</a>
+          </div>
+        </article>
+        <article class="product">
+          <div class="product-img"><span class="discount">[15% off]</span><button class="wish" aria-label="Wishlist">♡</button>🍅</div>
+          <div class="product-body">
+            <span class="tag">[Category]</span>
+            <h3>[Product Name 5]</h3>
+            <div class="rating">★ [4.3]</div>
+            <div class="price">₹[199]<del>₹[235]</del></div>
+            <a href="#contact" class="btn btn-sm">Enquire / Buy</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="block about" id="about">
+    <div class="container">
+      <h2>[About Your Business – Headline]</h2>
+      <p>[2–3 sentences about who you are, your experience, and the area you serve.]</p>
+      <div class="features">
+        <div class="feature"><div class="f-icon">🌿</div><h3>[Feature 1]</h3><p>[Short explanation of this benefit.]</p></div>
+        <div class="feature"><div class="f-icon">🚚</div><h3>[Feature 2]</h3><p>[Short explanation of this benefit.]</p></div>
+        <div class="feature"><div class="f-icon">🤝</div><h3>[Feature 3]</h3><p>[Short explanation of this benefit.]</p></div>
+        <div class="feature"><div class="f-icon">💰</div><h3>[Feature 4]</h3><p>[Short explanation of this benefit.]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="block alt" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Contact Us</h2>
+          <p>[We usually reply within 24 hours]</p>
+        </div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>Get in touch</h3>
+          <div class="contact-item">📍<div><b>Address</b>[Shop / Door No., Street, Town, District, State – PIN]</div></div>
+          <div class="contact-item">📞<div><b>Phone</b><a href="tel:+910000000000">[+91 00000 00000]</a></div></div>
+          <div class="contact-item">✉️<div><b>Email</b><a href="mailto:you@example.com">[you@example.com]</a></div></div>
+          <div class="contact-item">🕘<div><b>Hours</b>[Mon – Sat, 9:00 AM – 7:00 PM]</div></div>
+          <a href="https://wa.me/910000000000" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        </div>
+        <div class="contact-card">
+          <h3>Send an enquiry</h3>
+          <!-- GitHub Pages ಸರ್ವರ್ ಇಲ್ಲ: ಈ ಫಾರ್ಮ್ ನಿಮ್ಮ ಇಮೇಲ್ ಆ್ಯಪ್ ತೆರೆಯುತ್ತದೆ.
+               Formspree ಬಳಸಲು action="https://formspree.io/f/YOUR_ID" method="POST" ಹಾಕಿ -->
+          <form action="mailto:you@example.com" method="post" enctype="text/plain">
+            <div class="field"><input name="name" placeholder="Your name" required></div>
+            <div class="field"><input name="phone" type="tel" placeholder="Phone number" required></div>
+            <div class="field"><textarea name="message" rows="4" placeholder="What do you need?"></textarea></div>
+            <button class="btn" type="submit">Send enquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo"><span class="logo-mark">🌱</span>[Your Brand]</div>
+          <p style="font-size:14px;max-width:320px">[One-line footer description of your business.]</p>
+        </div>
+        <div>
+          <h4>Quick links</h4>
+          <ul><li><a href="#">Home</a></li><li><a href="#products">Products</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
+        </div>
+        <div>
+          <h4>Categories</h4>
+          <ul><li><a href="#categories">[Category 1]</a></li><li><a href="#categories">[Category 2]</a></li><li><a href="#categories">[Category 3]</a></li></ul>
+        </div>
+        <div>
+          <h4>Follow us</h4>
+          <ul><li><a href="#">[Instagram]</a></li><li><a href="#">[Facebook]</a></li><li><a href="#">[YouTube]</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© <span id="year"></span> [Your Business Name]. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/910000000000" class="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+  <script>
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+    const toggle = open => { drawer.classList.toggle('open', open); overlay.classList.toggle('open', open); };
+    document.getElementById('menuBtn').onclick = () => toggle(true);
+    document.getElementById('closeBtn').onclick = () => toggle(false);
+    overlay.onclick = () => toggle(false);
+    drawer.querySelectorAll('a').forEach(a => a.onclick = () => toggle(false));
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
